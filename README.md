@@ -40,6 +40,7 @@ Irodori本体とモデルは、それぞれの公式配布元の手順で別途�
    | `IRODORI_CHECKPOINT` | 使用する `model.safetensors`。省略時はHugging Faceの標準キャッシュから検索 |
    | `HF_HOME` / `HF_HUB_CACHE` | Hugging Faceの標準キャッシュ設定（任意） |
    | `DRAMA_PYTHON` | Windows起動用スクリプトで使うPython（任意） |
+   | `FFMPEG_BINARY` | ffmpegの実行ファイル（任意）。省略時はPATHから検索 |
    | `DRAMA_OLLAMA` | Ollama接続先。既定値は `http://127.0.0.1:11435` |
    | `DRAMA_DATA_DIR` | 実行時データの保存先。既定値はリポジトリ内の `data` |
 

@@ -34,7 +34,7 @@ def health():
         with urlopen(OLLAMA+'/api/tags',timeout=2) as r: models=[m['name'] for m in json.load(r).get('models',[])]
         ready='qwen3:8b' in models
     except Exception:pass
-    return {'ok':True,'writer_ready':ready,'models':models,'engine':'Irodori v4.1','writer':'Qwen3 8B · ローカル','data_dir':str(DATA)}
+    return {'ok':True,'writer_ready':ready,'models':models,'engine':'Irodori v4.1','writer':'Qwen3 8B · ローカル'}
 
 @app.get('/api/projects')
 def projects():return sorted([{'id':(p:=read_json(f))['id'],'title':p['title'],'lines':len(p['lines']),'modified':f.stat().st_mtime} for f in (DATA/'projects').glob('*.json')],key=lambda x:-x['modified'])

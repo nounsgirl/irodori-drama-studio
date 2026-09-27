@@ -21,10 +21,8 @@ def split_text(text,max_chars=90):
     return chunks
 
 def ffmpeg():
-    p=shutil.which('ffmpeg')
-    if not p:
-        p=str(Path(os.environ.get('LOCALAPPDATA',''))/'Microsoft/WinGet/Links/ffmpeg.exe')
-    if not Path(p).exists():raise RuntimeError('ffmpegが見つかりません。PATHに登録してください。')
+    p=shutil.which(os.environ.get('FFMPEG_BINARY','ffmpeg'))
+    if not p:raise RuntimeError('ffmpegが見つかりません。PATHまたはFFMPEG_BINARYを設定してください。')
     return p
 
 def load_audio(path,sr=SR):

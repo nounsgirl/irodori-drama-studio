@@ -53,6 +53,14 @@ class CoreTests(unittest.TestCase):
         self.assertEqual(c.get('/api/jobs/invalid').status_code,404)
         self.assertEqual(c.get('/api/assets/invalid/audio').status_code,404)
         self.assertEqual(c.post('/api/jobs/script',json={'cast':[]}).status_code,400)
+    def test_health_omits_local_paths(self):
+        from unittest.mock import patch
+        c=TestClient(app,base_url='http://127.0.0.1:8787')
+        with patch('server.urlopen',side_effect=OSError('offline')):
+            result=c.get('/api/health').json()
+        self.assertTrue(result['ok'])
+        self.assertNotIn('data_dir',result)
+        self.assertNotIn(str(Path(_isolated_data.name)),json.dumps(result))
     def test_pan(self):
         a=np.ones(48,dtype=np.float32);self.assertTrue(np.allclose(stereo(a,-1)[:,1],0));self.assertTrue(np.allclose(stereo(a,1)[:,0],0,atol=1e-7))
 
