@@ -91,10 +91,11 @@ def finish_job(key,proc,log):
 
 @app.post('/api/jobs/{kind}')
 def start_job(kind:str,p:Project,line_id:str=''):
-    if kind not in ('script','render','preview'):raise HTTPException(400,'不明な処理です')
+    if kind not in ('synopsis','script','render','preview'):raise HTTPException(400,'不明な処理です')
     enabled=[c for c in p.cast if c.enabled]
     if not enabled:raise HTTPException(400,'参加者を1人以上選んでください')
-    if kind!='script':
+    if kind=='script' and not p.synopsis.strip():raise HTTPException(400,'先にあらすじを作成・編集してください')
+    if kind in ('render','preview'):
         chosen=[l for l in p.lines if not line_id or l.id==line_id]
         if not chosen:raise HTTPException(400,'台本にセリフを入力してください')
         valid={c.id:c for c in enabled}

@@ -13,6 +13,10 @@ class Cast(BaseModel):
     personality: str = Field(default='',max_length=1200)
     role: str = Field(default='ゲスト',max_length=100)
     style: str = Field(default='自然で親しみやすい話し方',max_length=600)
+    pace: float = Field(default=1,ge=.6,le=1.5)
+    first_person: str = Field(default='私',max_length=40)
+    called_as: str = Field(default='',max_length=200)
+    addressing: str = Field(default='',max_length=1200)
     voice: str = Field(default='',max_length=64)
     enabled: bool = True
     gain: float = Field(default=0,ge=-18,le=12)
@@ -25,6 +29,7 @@ class Line(BaseModel):
     emotion: Emotion = '自然'
     scene: str = Field(default='シーン1',max_length=100)
     pause: float = Field(default=.25,ge=0,le=4)
+    simultaneous: bool = False
     se: Effect = 'auto'
 
 class Settings(BaseModel):
@@ -52,6 +57,7 @@ class Project(BaseModel):
     id: str = Field(default_factory=uid,pattern=r'^[a-f0-9]{32}$')
     title: str = Field(default='新しい音声ドラマ',min_length=1,max_length=100)
     summary: str = Field(default='',max_length=5000)
+    synopsis: str = Field(default='',max_length=8000)
     settings: Settings = Field(default_factory=Settings)
     cast: list[Cast] = Field(default_factory=list,max_length=12)
     lines: list[Line] = Field(default_factory=list,max_length=300)

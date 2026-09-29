@@ -53,7 +53,7 @@ class Synthesizer:
     def __init__(self):self.runtime=None
     def line(self,line,cast,settings):
         meta=read_json(DATA/'assets'/f'{cast.voice}.json')
-        params={'text':line.text,'emotion':line.emotion,'style':cast.style,'voice':meta['sha256'],'ref':settings.reference_seconds,'steps':settings.steps,'seed':settings.seed,'strength':settings.voice_strength,'speed':settings.speed,'version':2}
+        params={'text':line.text,'emotion':line.emotion,'style':cast.style,'voice':meta['sha256'],'ref':settings.reference_seconds,'steps':settings.steps,'seed':settings.seed,'strength':settings.voice_strength,'speed':settings.speed*cast.pace,'version':3}
         key=hashlib.sha256(json.dumps(params,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
         path=DATA/'cache'/f'{key}.wav'
         if path.exists():return load_audio(path),True
@@ -84,9 +84,9 @@ class Synthesizer:
             if parts:parts.append(np.zeros(4800,dtype=np.float32))
             parts.append(a)
         audio=np.concatenate(parts).astype(np.float32)
-        if settings.speed!=1:
+        if settings.speed*cast.pace!=1:
             raw=DATA/'cache'/f'{key}.raw.wav';sf.write(raw,audio,SR)
-            subprocess.run([ffmpeg(),'-v','error','-y','-i',str(raw),'-af',f'atempo={settings.speed}','-ar',str(SR),str(path)],check=True)
+            subprocess.run([ffmpeg(),'-v','error','-y','-i',str(raw),'-af',f'atempo={math.sqrt(settings.speed*cast.pace)},atempo={math.sqrt(settings.speed*cast.pace)}','-ar',str(SR),str(path)],check=True)
             raw.unlink();audio=load_audio(path)
         else:sf.write(path,audio,SR)
         return audio,False

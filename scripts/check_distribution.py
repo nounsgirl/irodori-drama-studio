@@ -9,7 +9,7 @@ ALLOWED={
     '.gitignore','.gitattributes','.env.example',
     '.github/workflows/check.yml','README.md','LICENSE','requirements.txt',
     'audio_engine.py','models.py','server.py','storage.py','worker.py',
-    'start.ps1','start.cmd','test_core.py',
+    'start.ps1','start.cmd','test_core.py','test_story.py','story.py',
     'static/index.html','static/style.css','static/app.js',
     'scripts/check_distribution.py',
 }
